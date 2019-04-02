@@ -11,7 +11,7 @@
 //------------------------------------------—
 
 //unsigned char i;
-int INFO = 87654321;
+int INFO = 0;
 int current_byte;
 int i=0;
 int j;
@@ -33,7 +33,7 @@ ISR(TIMER1_OVF_vect)							//nfqvth lkz gjlcxtnf dhtvtyb
 		state=databit;
 		break;
 		case databit:
-		if ((current_byte & (1<< j)) == 0)
+		if ((current_byte & (1<< j)))
 		{
 			PORTD = 0b00000001;
 		}
@@ -41,11 +41,10 @@ ISR(TIMER1_OVF_vect)							//nfqvth lkz gjlcxtnf dhtvtyb
 		{
 			PORTD = 0b00000000;
 		}
-		j++;
-		if (j==8)
-		{
+		if (j>6)
 			state=stopbit;
-		}
+		else
+			j++;
 		break;
 		case stopbit:
 		PORTD = 0b00000001;
@@ -53,7 +52,7 @@ ISR(TIMER1_OVF_vect)							//nfqvth lkz gjlcxtnf dhtvtyb
 		state=nextbyte;
 		break;	
 	}
-	if(i>7)
+	if(i>0)
 	{
 		cli();
 	}
@@ -107,14 +106,14 @@ int main(void)
 	TIMSK|=(1<<TOIE1);					//?ac?aoaiea i?a?uaaiey ii ia?aiieiaie? oaeia?a/n?ao?eea1//I?e onoaiiaeaiiii aeoa OCIE1B e onoaiiaeaiiii aeoa I ?aaeno?a noaoona ?ac?aoaaony i?a?uaaiea ii ia?aiieiaie? oaeia?a/n?ao?eea1
 	TCNT1=34286;						//iaeneioi 16aeo=65 536//Niioaaonoaaiii, anee a CSxx Caienaii 100, oi oaaee?aiea cia?aiey a TCNT1 i?ienoiaeo ia ea?aue 256-ue oaeo i?ioanni?a.
 
-	
+	sei();
 
 	
 	
 	while(1){
 		if (!(PINB&0b00000100))
 		{
-			sei();
+			//sei();
 			
 		}
 	}
